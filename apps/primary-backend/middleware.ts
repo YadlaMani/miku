@@ -7,21 +7,26 @@ export function authMiddleware(
 ) {
   const token = req.headers.authorization?.split(" ")[1];
   if (!token) {
-    return res.status(401).json({
+    res.status(401).json({
       message: "Unauthorized",
     });
+    return;
   }
-  const decoded = jwt.verify(token, process.env.JWT_PUBLIC_KEY!);
+  const decoded = jwt.verify(token, process.env.JWT_PUBLIC_KEY!, {
+    algorithms: ["RS256"],
+  });
   if (!decoded) {
-    return res.status(401).json({
+    res.status(401).json({
       message: "Unauthorized",
     });
+    return;
   }
   const userId = (decoded as any).payload.sub;
   if (!userId) {
-    return res.status(401).json({
+    res.status(401).json({
       message: "Unauthorized",
     });
+    return;
   }
   req.userId = userId;
   next();
