@@ -1,6 +1,6 @@
 //external imports
-import { prisma } from "db/client";
-import { redisClient } from "redis/client";
+import { prisma } from "../../packages/db";
+import { redisClient } from "../../packages/redis";
 import cors from "cors";
 import express from "express";
 //internal imports
