@@ -12,16 +12,18 @@ export function authMiddleware(
     });
     return;
   }
+
   const decoded = jwt.verify(token, process.env.JWT_PUBLIC_KEY!, {
     algorithms: ["RS256"],
   });
+
   if (!decoded) {
     res.status(401).json({
       message: "Unauthorized",
     });
     return;
   }
-  const userId = (decoded as any).payload.sub;
+  const userId = (decoded as any).sub;
   if (!userId) {
     res.status(401).json({
       message: "Unauthorized",

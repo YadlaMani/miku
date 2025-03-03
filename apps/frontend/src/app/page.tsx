@@ -2,11 +2,12 @@ import { Button } from "@/components/ui/button";
 import { Appbar } from "@/components/elements/Appbar";
 import { Prompt } from "@/components/elements/Prompt";
 import { TemplateButtons } from "@/components/elements/TemplateButtons";
+import { ProjectsDrawer } from "@/components/elements/ProjectDrawer";
 export default function Home() {
   return (
     <div className="p-4">
       <Appbar />
-      {/* <ProjectDrawer /> */}
+      <ProjectsDrawer />
       <div className="max-w-2xl mx-auto pt-32">
         <div className="text-2xl font-bold text-center">
           What do you want to build?

@@ -8,12 +8,37 @@ import axios from "axios";
 import { useAuth } from "@clerk/nextjs";
 
 import { useRouter } from "next/navigation";
+import { BACKEND_URL } from "../../../config";
+import { toast } from "sonner";
 export function Prompt() {
   const [prompt, setPrompt] = useState("");
   const { getToken } = useAuth();
   const router = useRouter();
+
   async function startProject() {
-    const res = await axios.post();
+    try {
+      const token = await getToken();
+      const res = await axios.post(
+        `${BACKEND_URL}/project`,
+        {
+          prompt: prompt,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(res);
+      if (res.data.success) {
+        toast.success("Project created successfully");
+      } else {
+        toast.message("Failed to create project");
+      }
+    } catch (err) {
+      console.log(err);
+      toast.error("Something went wrong");
+    }
   }
 
   return (

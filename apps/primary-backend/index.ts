@@ -11,31 +11,50 @@ app.use(cors());
 app.listen("5555", () => {
   console.log("Server is running on port 5555");
 });
+app.get("/", (req, res) => {
+  res.send("Sever is alive");
+});
 //creating a project
 app.post("/project", authMiddleware, async (req, res) => {
-  const { prompt } = req.body;
-  const userId = req.userId!;
-  //Todo :get good title for the prompt
-  const dsecription = prompt.split("\n")[0];
+  try {
+    const { prompt } = req.body;
+    const userId = req.userId!;
 
-  const project = await prisma.project.create({
-    data: {
-      dsecription,
-      userId,
-    },
-  });
-  res.json({
-    projectId: project.id,
-  });
+    //Todo :get good title for the prompt
+    const description = prompt.split("\n")[0];
+
+    const project = await prisma.project.create({
+      data: {
+        description,
+        userId,
+      },
+    });
+
+    res.status(200).json({
+      message: "Project created successfully",
+      projectId: project.id,
+      success: true,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      message: "Internal server error",
+      error: err,
+      success: false,
+    });
+  }
 });
 //Get project end point
 
 app.get("/projects", authMiddleware, async (req, res) => {
   const userId = req.userId;
-  const project = await prisma.project.findFirst({
+  const projects = await prisma.project.findMany({
     where: {
       userId,
     },
   });
-  res.json(project);
+  console.log(projects);
+  res.json({
+    projects: projects,
+  });
 });

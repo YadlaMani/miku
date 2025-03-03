@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
-// import { ThemeProvider } from "@/components/elements/ThemeProvider";
+import { Toaster } from "sonner";
+import ThemeProvider from "@/components/elements/ThemeProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,19 +22,21 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html className="hydrated">
-      <ClerkProvider>
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-          cz-shortcut-listen="true"
-        >
-          {children}
-        </body>
-      </ClerkProvider>
+    <html lang="en">
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <ClerkProvider>
+          <ThemeProvider>
+            <div>
+              {children}
+              <Toaster />
+            </div>
+          </ThemeProvider>
+        </ClerkProvider>
+      </body>
     </html>
   );
 }
