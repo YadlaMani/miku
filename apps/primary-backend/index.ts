@@ -4,7 +4,7 @@ import { redisClient } from "../../packages/redis";
 import cors from "cors";
 import express from "express";
 //internal imports
-import { authMiddleware } from "./middleware";
+import { authMiddleware } from "../../packages/common/middleware";
 const app = express();
 app.use(express.json());
 app.use(cors());
